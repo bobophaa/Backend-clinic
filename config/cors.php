@@ -18,6 +18,9 @@ return [
         'http://localhost:3000',
         'http://127.0.0.1:3000',
         'https://clinic-frontend.vercel.app',
+        'https://clinic-frontend-b7sm4jnyb-bophas-projects-bd1306a1.vercel.app', 
+        
+    'http://localhost:5173'
     ],
 
     // Allow any local Vite dev port pattern (5173-5180 range)
