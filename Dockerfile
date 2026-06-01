@@ -1,4 +1,4 @@
-FROM php:8.4-fpmgit add Dockerfile
+FROM php:8.4-fpm
 
 WORKDIR /app
 
