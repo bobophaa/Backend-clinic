@@ -17,8 +17,8 @@ return [
 
     // Allow any local Vite dev port (5173, 5174, …)
     'allowed_origins_patterns' => [
-        '#^http://localhost:\d+$#',
-        '#^http://127\.0\.0\.1:\d+$#',
+      'http://localhost:5173',
+    'https://clinic-frontend.vercel.app',
     ],
 
     'allowed_headers' => ['*'],
