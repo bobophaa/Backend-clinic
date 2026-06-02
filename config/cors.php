@@ -22,13 +22,13 @@ return [
     'https://clinic-frontend-lake.vercel.app',  // ← add this
     'https://clinic-frontend-gas4ixhpw-bophas-projects-bd1306a1.vercel.app',
 ],
-
-'allowed_origins_patterns' => [
-    '^http://localhost:517[0-9]$',
-    '^http://127\.0\.0\.1:517[0-9]$',
-    // Cover all Vercel preview deployments automatically
-    '^https://clinic-frontend-.*\.vercel\.app$',
+'allowed_origins' => [
+    'http://localhost:5173',
+    'https://clinic-frontend-lake.vercel.app',
+    'https://clinic-frontend-gas4ixhpw-bophas-projects-bd1306a1.vercel.app',
 ],
+'supports_credentials' => true,
+
     'allowed_headers' => ['*'],
 
     'exposed_headers' => [],
