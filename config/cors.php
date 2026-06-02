@@ -8,25 +8,27 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => [
-        // Local Development
-        'http://localhost:5173',
-        'http://127.0.0.1:5173',
-        'http://localhost:5174',
-        'http://127.0.0.1:5174',
-        'http://localhost:5175',
-        'http://127.0.0.1:5175',
-        'http://localhost:5176',
-        'http://127.0.0.1:5176',
-        // Production Vercel
-        'https://clinic-frontend-gas4ixhpw-bophas-projects-bd1306a1.vercel.app',
-    ],
+  'allowed_origins' => [
+    // Local Development
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+    'http://localhost:5174',
+    'http://127.0.0.1:5174',
+    'http://localhost:5175',
+    'http://127.0.0.1:5175',
+    'http://localhost:5176',
+    'http://127.0.0.1:5176',
+    // Production Vercel
+    'https://clinic-frontend-lake.vercel.app',  // ← add this
+    'https://clinic-frontend-gas4ixhpw-bophas-projects-bd1306a1.vercel.app',
+],
 
-    'allowed_origins_patterns' => [
-      '^http://localhost:517[0-9]$',
-      '^http://127\.0\.0\.1:517[0-9]$',
-    ],
-
+'allowed_origins_patterns' => [
+    '^http://localhost:517[0-9]$',
+    '^http://127\.0\.0\.1:517[0-9]$',
+    // Cover all Vercel preview deployments automatically
+    '^https://clinic-frontend-.*\.vercel\.app$',
+],
     'allowed_headers' => ['*'],
 
     'exposed_headers' => [],

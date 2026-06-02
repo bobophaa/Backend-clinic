@@ -31,15 +31,15 @@ class DatabaseSeeder extends Seeder
             );
         }
 
-        // 2. រៀបចំទិន្នន័យគ្រូពេទ្យ (កែសម្រួលឈ្មោះ Column ឱ្យត្រូវនឹង Database របស់ប្អូន)
+        // 2. រៀបចំទិន្នន័យគ្រូពេទ្យ 
         $doctors = [
-            ['name' => 'វេជ្ជ. សុខ រ័ត្ន', 'specialization' => 'បេះដូង', 'phone' => '012 345 678', 'room' => 'A-201', 'experience' => '12 ឆ្នាំ', 'fee' => '25.00', 'is_active' => true],
-            ['name' => 'វេជ្ជ. ចាន់ណា', 'specialization' => 'ស្ត្រី និងសម្រាលកូន', 'phone' => '011 678 990', 'room' => 'B-101', 'experience' => '9 ឆ្នាំ', 'fee' => '30.00', 'is_active' => true],
-            ['name' => 'វេជ្ជ. ដារ៉ា', 'specialization' => 'កុមារ', 'phone' => '099 887 766', 'room' => 'C-202', 'experience' => '6 ឆ្នាំ', 'fee' => '20.00', 'is_active' => false],
-            ['name' => 'វេជ្ជ. ស្រីពៅ', 'specialization' => 'ស្បែក', 'phone' => '098 234 112', 'room' => 'D-401', 'experience' => '10 ឆ្នាំ', 'fee' => '22.00', 'is_active' => true],
-            ['name' => 'វេជ្ជ. វណ្ណា', 'specialization' => 'ឆ្អឹង និងសន្លាក់', 'phone' => '097 556 882', 'room' => 'A-303', 'experience' => '15 ឆ្នាំ', 'fee' => '35.00', 'is_active' => true],
-            ['name' => 'វេជ្ជ. រតនា', 'specialization' => 'ភ្នែក', 'phone' => '096 555 110', 'room' => 'E-101', 'experience' => '8 ឆ្នាំ', 'fee' => '18.00', 'is_active' => true],
-            ['name' => 'វេជ្ជ. គឹម សុភា', 'specialization' => 'ពិនិត្យទូទៅ', 'phone' => '015 111 222', 'room' => 'G-101', 'experience' => '11 ឆ្នាំ', 'fee' => '15.00', 'is_active' => true],
+            ['name' => 'វេជ្ជ. សុខ រ័ត្ន', 'specialization' => 'បេះដូង', 'phone' => '012 345 678', 'qualification' => 'MD', 'is_active' => true],
+            ['name' => 'វេជ្ជ. ចាន់ណា', 'specialization' => 'ស្ត្រី និងសម្រាលកូន', 'phone' => '011 678 990', 'qualification' => 'MD', 'is_active' => true],
+            ['name' => 'វេជ្ជ. ដារ៉ា', 'specialization' => 'កុមារ', 'phone' => '099 887 766', 'qualification' => 'MD', 'is_active' => false],
+            ['name' => 'វេជ្ជ. ស្រីពៅ', 'specialization' => 'ស្បែក', 'phone' => '098 234 112', 'qualification' => 'MD', 'is_active' => true],
+            ['name' => 'វេជ្ជ. វណ្ណា', 'specialization' => 'ឆ្អឹង និងសន្លាក់', 'phone' => '097 556 882', 'qualification' => 'MD', 'is_active' => true],
+            ['name' => 'វេជ្ជ. រតនា', 'specialization' => 'ភ្នែក', 'phone' => '096 555 110', 'qualification' => 'MD', 'is_active' => true],
+            ['name' => 'វេជ្ជ. គឹម សុភា', 'specialization' => 'ពិនិត្យទូទៅ', 'phone' => '015 111 222', 'qualification' => 'MD', 'is_active' => true],
         ];
 
         foreach ($doctors as $doctor) {
@@ -65,12 +65,14 @@ class DatabaseSeeder extends Seeder
                 ]
             );
             
-            $doctorData = $doctor;
-            $doctorData['user_id'] = $user->id;
-            
             Doctor::updateOrCreate(
-                ['name' => $doctor['name']],
-                $doctorData
+                ['user_id' => $user->id],
+                [
+                    'specialization' => $doctor['specialization'],
+                    'phone' => $doctor['phone'],
+                    'qualification' => $doctor['qualification'],
+                    'is_active' => $doctor['is_active'],
+                ]
             );
         }
 
@@ -79,16 +81,7 @@ class DatabaseSeeder extends Seeder
         $generalDoctor = Doctor::where('specialization', 'ពិនិត្យទូទៅ')->first();
         
         if ($doctorUser && $generalDoctor) {
-            $oldDoctor = Doctor::where('user_id', $doctorUser->id)->first();
-            if ($oldDoctor && $oldDoctor->id !== $generalDoctor->id) {
-                $generalDoctorUserId = $generalDoctor->user_id;
-                DB::transaction(function () use ($oldDoctor, $generalDoctor, $doctorUser, $generalDoctorUserId) {
-                    $oldDoctor->update(['user_id' => $generalDoctorUserId]);
-                    $generalDoctor->update(['user_id' => $doctorUser->id]);
-                });
-            } else {
-                $generalDoctor->update(['user_id' => $doctorUser->id]);
-            }
+            $generalDoctor->update(['user_id' => $doctorUser->id]);
         }
     }
 }

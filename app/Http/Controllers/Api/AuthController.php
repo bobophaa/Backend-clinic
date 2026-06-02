@@ -73,13 +73,14 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        if (!Auth::attempt($request->only('email', 'password'))) {
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
                 'message' => 'អ៊ីមែល ឬពាក្យសម្ងាត់មិនត្រឹមត្រូវឡើយ'
             ], 401);
         }
 
-        $user = User::where('email', $request->email)->firstOrFail();
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
@@ -88,6 +89,42 @@ class AuthController extends Controller
                 'name' => $user->name,
                 'email' => $user->email,
                 'role' => $user->role,
+            ],
+            'token' => $token,
+        ], 200);
+    }
+
+    public function adminLogin(Request $request)
+    {
+        $request->validate([
+            'email'    => 'required|string|email',
+            'password' => 'required|string',
+        ]);
+
+        // Find user by email and verify password directly (no session needed)
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json([
+                'message' => 'Invalid credentials',
+            ], 401);
+        }
+
+        // Ensure the user has the admin role
+        if ($user->role !== 'admin') {
+            return response()->json([
+                'message' => 'Not authorized as admin',
+            ], 403);
+        }
+
+        // Create a Sanctum token scoped for admin usage
+        $token = $user->createToken('admin-token')->plainTextToken;
+        return response()->json([
+            'user'  => [
+                'id'    => $user->id,
+                'name'  => $user->name,
+                'email' => $user->email,
+                'role'  => $user->role,
             ],
             'token' => $token,
         ], 200);

@@ -30,6 +30,7 @@ Route::post('/appointments', [AppointmentController::class, 'store']);
 Route::prefix('auth')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login',    [AuthController::class, 'login']);
+    Route::post('/admin/login', [AuthController::class, 'adminLogin']);
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/me',       [AuthController::class, 'me']);
