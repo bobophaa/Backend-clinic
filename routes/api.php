@@ -81,4 +81,4 @@ Route::post('/patients', [PatientController::class, 'store']);
     // ── Dashboard ──
     Route::get('/dashboard/stats',       [DashboardController::class, 'stats']);
     Route::get('/patient/health-vitals', [PatientDashboardController::class, 'getHealthVitals']);
-});
+});// force rebuild
